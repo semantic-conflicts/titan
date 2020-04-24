@@ -10,7 +10,7 @@ script:
 
 before_deploy:
     - mkdir MiningBuild
-    - find . -name '*.jar' -exec cp {} ./MiningBuild \;
+    - find . -name '*titan-core-0.4.1*with-dependencies.jar' -exec cp {} ./MiningBuild \;
     - cd /home/travis/build/semantic-conflicts/titan/MiningBuild
     - tar -zcvf result.tar.gz *
 deploy:
