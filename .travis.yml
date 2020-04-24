@@ -1,13 +1,26 @@
-language: java
-notifications:
-  email:
-    - matthias@thinkaurelius.com
-    - marko@thinkaurelius.com
-    - dalaro@hopcount.org
-jdk:
-  - oraclejdk7
-  - openjdk7
 
-branches:
-  only:
-    - master
+sudo: required
+language: java
+
+jdk:
+  - openjdk8
+
+script:
+  - mvn clean compile assembly:single
+
+before_deploy:
+    - mkdir MiningBuild
+    - find . -name '*.jar' -exec cp {} ./MiningBuild \;
+    - cd /home/travis/build/semantic-conflicts/titan/MiningBuild
+    - tar -zcvf result.tar.gz *
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: result.tar.gz
+  name: without-fetchjar-67bf106dcc7470e2d6b7ef94734f200885bf35ee
+  file_glob: true
+  overwrite: true
+  skip_cleanup: true
+  on:
+    all_branches: true 
+            
